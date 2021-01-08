@@ -9,6 +9,7 @@ volumes:
     prometheus: {}
     grafana: {}
     alertmanager: {}
+    loki-data: {}
 
 configs:
   caddy_config:
@@ -58,7 +59,7 @@ services:
           memory: 64M
 
   grafana:
-    image: stefanprodan/swarmprom-grafana:5.3.4
+    image: grafana/grafana
     networks:
       - net
     environment:
@@ -172,6 +173,16 @@ services:
           memory: 2048M
         reservations:
           memory: 128M
+
+  loki:
+    image: grafana/loki
+    ports:
+      - "3100:3100"
+    networks:
+      - net
+    volumes:
+      - loki-data:/loki
+
 
   caddy:
     image: stefanprodan/caddy
